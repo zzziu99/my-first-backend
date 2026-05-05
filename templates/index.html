@@ -34,7 +34,9 @@
   --font-body:14px;
   --font-secondary:12px;
   --font-caption:11px;
+  --font-subtitle:18px;
   --leading-display:1.2;
+  --leading-subtitle:1.3;
   --leading-title:1.3;
   --leading-body:1.6;
   --tracking-tight:-0.01em;
@@ -62,12 +64,14 @@ body{
   background:rgba(253,248,245,0.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
   display:flex;align-items:center;justify-content:space-between;padding-top:calc(var(--sp-16) + var(--safe-t))
 }
-.header-title{font-size:18px;font-weight:700;line-height:var(--leading-display);letter-spacing:var(--tracking-tight);display:flex;align-items:center;gap:var(--sp-8)}
+.header-title{font-size:var(--font-subtitle);font-weight:700;line-height:var(--leading-subtitle);letter-spacing:var(--tracking-tight);display:flex;align-items:center;gap:var(--sp-8)}
 .header-title i{color:var(--coral)}
+.header.scrolled{box-shadow:0 1px 0 rgba(0,0,0,0.06)}
 
 /* ========== SCROLL AREA ========== */
-.main{flex:1;overflow-y:auto;padding:0 var(--sp-24) 80px;-webkit-overflow-scrolling:touch}
-.tab{display:none;animation:fadeIn .25s ease}
+.main{flex:1;overflow-y:auto;padding:0 var(--sp-24) 80px;-webkit-overflow-scrolling:touch;scroll-behavior:smooth}
+.main::-webkit-scrollbar{width:0}
+.tab{display:none;animation:fadeIn .25s ease;touch-action:manipulation}
 .tab.active{display:block}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
@@ -210,7 +214,7 @@ body{
   display:flex;align-items:center;justify-content:center;margin:0 auto var(--sp-16)
 }
 .chat-welcome .logo i{width:28px;height:28px;color:#fff}
-.chat-welcome h3{font-size:18px;font-weight:700;line-height:var(--leading-display);letter-spacing:var(--tracking-tight)}
+.chat-welcome h3{font-size:var(--font-subtitle);font-weight:700;line-height:var(--leading-subtitle);letter-spacing:var(--tracking-tight)}
 .chat-welcome p{font-size:var(--font-body);color:var(--slate);margin-top:var(--sp-4);line-height:var(--leading-title)}
 .quick-chips{display:flex;flex-wrap:wrap;gap:var(--sp-8);justify-content:center;margin-top:var(--sp-16)}
 .quick-chip{
@@ -221,8 +225,10 @@ body{
 .quick-chip:hover{background:var(--coral);color:#fff}
 
 .chat-input-bar{
-  position:sticky;bottom:0;background:#FDF8F5;padding:var(--sp-8) 0 var(--sp-8);
+  position:sticky;bottom:0;background:rgba(253,248,245,0.92);backdrop-filter:blur(12px);
+  padding:var(--sp-8) 0 var(--sp-8);
   display:flex;gap:var(--sp-8);align-items:center;
+  box-shadow:0 -1px 0 rgba(0,0,0,0.04);
   padding-bottom:calc(var(--sp-8) + var(--safe-b))
 }
 .chat-input{
@@ -253,7 +259,7 @@ body{
   width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,0.2);
   display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700
 }
-.profile-info h3{font-size:18px;font-weight:700;line-height:var(--leading-display);letter-spacing:var(--tracking-tight)}
+.profile-info h3{font-size:var(--font-subtitle);font-weight:700;line-height:var(--leading-subtitle);letter-spacing:var(--tracking-tight)}
 .profile-info p{font-size:var(--font-body);opacity:0.8;margin-top:2px;line-height:var(--leading-title)}
 .profile-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-8);margin-top:var(--sp-24)}
 .profile-stat{text-align:center}
@@ -289,7 +295,7 @@ body{
 .nav-btn{
   display:flex;flex-direction:column;align-items:center;gap:var(--sp-4);
   padding:var(--sp-4) var(--sp-16);border-radius:var(--radius-xl);border:none;background:transparent;
-  cursor:pointer;transition:all 200ms ease;font-family:inherit;min-width:56px
+  cursor:pointer;transition:all 200ms ease;font-family:inherit;min-width:56px;touch-action:manipulation
 }
 .nav-btn i{width:22px;height:22px;color:#999;transition:color 200ms ease}
 .nav-btn span{font-size:10px;color:#999;font-weight:500;transition:color 200ms ease}
@@ -303,7 +309,9 @@ body{
   background:#FDF8F5;display:none;flex-direction:column;animation:slideUp .3s ease
 }
 .detail-overlay.open{display:flex}
+.detail-overlay.closing{animation:slideDown .25s ease forwards}
 @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+@keyframes slideDown{from{transform:translateY(0)}to{transform:translateY(100%)}}
 .detail-header{
   display:flex;align-items:center;gap:var(--sp-16);padding:var(--sp-16) var(--sp-16);
   padding-top:calc(var(--sp-16) + var(--safe-t));
@@ -316,7 +324,7 @@ body{
 .detail-back:hover{background:rgba(0,0,0,0.08)}
 .detail-back i{width:18px;height:18px;color:#1A1A2E}
 .detail-title{font-size:var(--font-title);font-weight:700;line-height:var(--leading-title);letter-spacing:var(--tracking-tight)}
-.detail-body{flex:1;overflow-y:auto;padding:var(--sp-8) var(--sp-16) var(--sp-24);-webkit-overflow-scrolling:touch}
+.detail-body{flex:1;overflow-y:auto;padding:var(--sp-8) var(--sp-16) var(--sp-24);-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
 .detail-qa-item{
   background:#fff;border-radius:var(--radius-lg);padding:var(--sp-16);
   margin-bottom:var(--sp-8);box-shadow:var(--shadow-sm)
@@ -357,7 +365,7 @@ body{
     <!-- ===== TAB: 首页 ===== -->
     <div class="tab active" id="tab-home">
       <div class="hero">
-        <h2>你好 👋<br>想查什么<span>校园信息</span>？</h2>
+        <h2>你好<br>想查什么<span>校园信息</span>？</h2>
         <p>知识库收录了 12 个分类、670+ 条校园问答</p>
         <div class="hero-badge"><i data-lucide="sparkles"></i> AI 智能问答已上线</div>
       </div>
@@ -376,13 +384,13 @@ body{
       <div class="section-header"><h3>快捷入口</h3><a href="#" data-tab="browse">查看全部</a></div>
       <div class="quick-grid" id="quick-grid"></div>
 
-      <div class="section-header"><h3>📢 最新通知</h3></div>
+      <div class="section-header"><h3 style="display:flex;align-items:center;gap:var(--sp-4)"><i data-lucide="bell" style="width:16px;height:16px;color:var(--coral)"></i>最新通知</h3></div>
       <div class="notice-list" id="notice-list"></div>
     </div>
 
     <!-- ===== TAB: 浏览 ===== -->
     <div class="tab" id="tab-browse">
-      <div style="margin:var(--sp-8) 0 var(--sp-4)"><h2 style="font-size:18px;font-weight:700;line-height:var(--leading-display);letter-spacing:var(--tracking-tight)">分类浏览</h2></div>
+      <div style="margin:var(--sp-8) 0 var(--sp-4)"><h2 style="font-size:var(--font-subtitle);font-weight:700;line-height:var(--leading-subtitle);letter-spacing:var(--tracking-tight)">分类浏览</h2></div>
       <div class="chip-scroll" id="chip-scroll"></div>
       <div class="cat-grid" id="cat-grid"></div>
     </div>
@@ -407,7 +415,7 @@ body{
     <div class="tab" id="tab-profile">
       <div class="profile-card">
         <div class="profile-row">
-          <div class="profile-avatar">📚</div>
+          <div class="profile-avatar"><i data-lucide="graduation-cap" style="width:28px;height:28px;color:#fff"></i></div>
           <div class="profile-info">
             <h3>校园百事通</h3>
             <p>知识库助手 · 24h 在线</p>
@@ -462,6 +470,11 @@ lucide.createIcons();
 // ===== Clock =====
 function updateClock(){document.getElementById('time-display').textContent=new Date().toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'})}
 updateClock();setInterval(updateClock,30000)
+
+// ===== Header scroll shadow =====
+document.getElementById('main-scroll').addEventListener('scroll',function(){
+  document.querySelector('.header').classList.toggle('scrolled',this.scrollTop>1)
+})
 
 // ===== Data =====
 let allData={}, categoryOrder=[], searchIndex=[]
@@ -608,7 +621,11 @@ function openCategory(cat){
   document.getElementById('detail-overlay').classList.add('open')
   document.getElementById('main-scroll').scrollTop=0
 }
-document.getElementById('detail-back').addEventListener('click',()=>document.getElementById('detail-overlay').classList.remove('open'))
+document.getElementById('detail-back').addEventListener('click',function(){
+  var o=document.getElementById('detail-overlay');
+  o.classList.add('closing');
+  o.addEventListener('animationend',function(){o.classList.remove('open','closing')},{once:true})
+})
 
 // ===== Tab Switching =====
 document.querySelectorAll('.nav-btn').forEach(btn=>{
@@ -616,7 +633,9 @@ document.querySelectorAll('.nav-btn').forEach(btn=>{
     document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'))
     btn.classList.add('active')
     document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'))
-    document.getElementById('tab-'+btn.dataset.tab).classList.add('active')
+    var t=document.getElementById('tab-'+btn.dataset.tab)
+    void t.offsetHeight
+    t.classList.add('active')
     document.getElementById('main-scroll').scrollTop=0
   })
 })

@@ -3,6 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="theme-color" content="#FDF8F5">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="校园百事通">
+<link rel="manifest" href="/static/manifest.json">
 <title>校园百事通</title>
 <script src="https://unpkg.com/lucide@latest"></script>
 <style>
@@ -56,6 +60,8 @@
   --overlay-bg: rgba(0,0,0,0.04);
   --chat-input-bg: rgba(253,248,245,0.92);
   --hero-bg: linear-gradient(135deg,var(--coral-light),#FFF5E6);
+  --skeleton-bg: #eeeeee;
+  --skeleton-shine: #f5f5f5;
   --shadow-sm:0 1px 3px rgba(0,0,0,0.06);
   --shadow-md:0 2px 8px rgba(0,0,0,0.06);
   --shadow-lg:0 4px 24px rgba(0,0,0,0.08);
@@ -216,6 +222,10 @@ body{
   font-size:12px;font-weight:700;color:#fff
 }
 .chat-avatar.bot{background:var(--coral)}
+.typing-dots span{animation:dotPulse 1.4s infinite;opacity:0;font-size:24px;line-height:1}
+.typing-dots span:nth-child(2){animation-delay:.2s}
+.typing-dots span:nth-child(3){animation-delay:.4s}
+@keyframes dotPulse{0%{opacity:0}50%{opacity:1}100%{opacity:0}}
 .chat-avatar.user{background:var(--slate)}
 .chat-bubble{
   max-width:80%;padding:var(--sp-16) var(--sp-16);border-radius:var(--radius-lg);
@@ -384,6 +394,8 @@ body{
   --shadow-sm:0 1px 3px rgba(0,0,0,0.3);
   --shadow-md:0 2px 8px rgba(0,0,0,0.35);
   --shadow-lg:0 4px 24px rgba(0,0,0,0.4);
+  --skeleton-bg: #222236;
+  --skeleton-shine: #2a2a40;
 }
 [data-theme="dark"] .hero-badge,
 [data-theme="dark"] .chat-send,
@@ -393,7 +405,7 @@ body{
 
 /* ========== SKELETON ========== */
 @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
-.skeleton{background:linear-gradient(90deg,var(--surface) 25%,var(--hover-bg) 50%,var(--surface) 75%);background-size:200% 100%;animation:shimmer 1.2s ease-in-out infinite;border-radius:var(--radius-sm)}
+.skeleton{background:linear-gradient(90deg,var(--skeleton-bg) 25%,var(--skeleton-shine) 50%,var(--skeleton-bg) 75%);background-size:200% 100%;animation:shimmer 1.2s ease-in-out infinite;border-radius:var(--radius-sm)}
 
 /* ========== UTILITY ========== */
 .spacer{flex:1}
@@ -431,16 +443,27 @@ body{
       </div>
 
       <div class="kpi-row" id="kpi-row">
-        <div class="kpi-card"><div class="kpi-value" id="kpi-cats">—</div><div class="kpi-label">总分类</div></div>
-        <div class="kpi-card"><div class="kpi-value" id="kpi-qa">—</div><div class="kpi-label">知识条目</div></div>
-        <div class="kpi-card"><div class="kpi-value" id="kpi-avg">—</div><div class="kpi-label">平均每类</div></div>
+        <div class="kpi-card"><div class="kpi-value" id="kpi-cats"><span class="skeleton" style="display:inline-block;width:40px;height:32px"></span></div><div class="kpi-label">总分类</div></div>
+        <div class="kpi-card"><div class="kpi-value" id="kpi-qa"><span class="skeleton" style="display:inline-block;width:60px;height:32px"></span></div><div class="kpi-label">知识条目</div></div>
+        <div class="kpi-card"><div class="kpi-value" id="kpi-avg"><span class="skeleton" style="display:inline-block;width:48px;height:32px"></span></div><div class="kpi-label">平均每类</div></div>
       </div>
 
       <div class="section-header"><h3>快捷入口</h3><a href="#" data-tab="browse">查看全部</a></div>
-      <div class="quick-grid" id="quick-grid"></div>
+      <div class="quick-grid" id="quick-grid">
+        <div class="quick-item" style="pointer-events:none"><div class="skeleton" style="width:40px;height:40px;border-radius:var(--radius-md)"></div><span class="skeleton" style="width:48px;height:12px"></span></div>
+        <div class="quick-item" style="pointer-events:none"><div class="skeleton" style="width:40px;height:40px;border-radius:var(--radius-md)"></div><span class="skeleton" style="width:48px;height:12px"></span></div>
+        <div class="quick-item" style="pointer-events:none"><div class="skeleton" style="width:40px;height:40px;border-radius:var(--radius-md)"></div><span class="skeleton" style="width:48px;height:12px"></span></div>
+        <div class="quick-item" style="pointer-events:none"><div class="skeleton" style="width:40px;height:40px;border-radius:var(--radius-md)"></div><span class="skeleton" style="width:48px;height:12px"></span></div>
+        <div class="quick-item" style="pointer-events:none"><div class="skeleton" style="width:40px;height:40px;border-radius:var(--radius-md)"></div><span class="skeleton" style="width:48px;height:12px"></span></div>
+        <div class="quick-item" style="pointer-events:none"><div class="skeleton" style="width:40px;height:40px;border-radius:var(--radius-md)"></div><span class="skeleton" style="width:48px;height:12px"></span></div>
+      </div>
 
       <div class="section-header"><h3 style="display:flex;align-items:center;gap:var(--sp-4)"><i data-lucide="bell" style="width:16px;height:16px;color:var(--coral)"></i>最新通知</h3></div>
-      <div class="notice-list" id="notice-list"></div>
+      <div class="notice-list" id="notice-list">
+        <div class="notice-item" style="pointer-events:none"><div class="skeleton" style="width:8px;height:8px;border-radius:50%"></div><span class="skeleton" style="flex:1;height:14px"></span><span class="skeleton" style="width:40px;height:12px"></span></div>
+        <div class="notice-item" style="pointer-events:none"><div class="skeleton" style="width:8px;height:8px;border-radius:50%"></div><span class="skeleton" style="flex:1;height:14px"></span><span class="skeleton" style="width:40px;height:12px"></span></div>
+        <div class="notice-item" style="pointer-events:none"><div class="skeleton" style="width:8px;height:8px;border-radius:50%"></div><span class="skeleton" style="flex:1;height:14px"></span><span class="skeleton" style="width:40px;height:12px"></span></div>
+      </div>
     </div>
 
     <!-- ===== TAB: 浏览 ===== -->
@@ -522,13 +545,17 @@ body{
 <script>
 lucide.createIcons();
 
+// ===== Service Worker =====
+try{if('serviceWorker'in navigator)navigator.serviceWorker.register('/static/sw.js')}catch(e){}
+
 // ===== Theme =====
-(function(){var t=localStorage.getItem('theme');if(t){document.documentElement.setAttribute('data-theme',t)}else if(window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches){document.documentElement.setAttribute('data-theme','dark')}})()
+(function(){var t=localStorage.getItem('theme'),d=document.documentElement;if(t){d.setAttribute('data-theme',t)}else if(window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches){d.setAttribute('data-theme','dark')}var m=document.querySelector('meta[name="theme-color"]');if(m&&d.getAttribute('data-theme')==='dark')m.setAttribute('content','#0f0f1a')})()
 
 function toggleTheme(){
   var d=document.documentElement,on=d.getAttribute('data-theme')==='dark'
   d.setAttribute('data-theme',on?'':'dark')
   localStorage.setItem('theme',on?'':'dark')
+  document.querySelector('meta[name="theme-color"]').setAttribute('content',on?'#FDF8F5':'#0f0f1a')
   updateThemeUI()
 }
 function updateThemeUI(){
@@ -673,10 +700,21 @@ function doChat(q){
   const input=document.getElementById('chat-input')
   input.value=''
   addChatMsg(q,true)
+  // Typing indicator
+  const area=document.getElementById('chat-area')
+  const typing=document.createElement('div')
+  typing.className='chat-msg bot typing'
+  typing.innerHTML='<div class="chat-avatar bot">AI</div><div class="chat-bubble"><span class="typing-dots"><span>.</span><span>.</span><span>.</span></span></div>'
+  area.appendChild(typing)
+  area.scrollTop=area.scrollHeight
   fetch('/api/handbook',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:q})})
-  .then(r=>r.json()).then(d=>{
+  .then(r=>r.json()).then(function(d){
+    typing.remove()
     addChatMsg(d.answer+'<br><span style="font-size:12px;opacity:0.6">来源：'+d.category+' · '+d.related+'</span>',false)
-  }).catch(()=>addChatMsg('网络异常，请稍后再试',false))
+  }).catch(function(){
+    typing.remove()
+    addChatMsg('网络异常，请稍后再试',false)
+  })
 }
 
 // ===== Category Detail =====
@@ -726,6 +764,19 @@ document.getElementById('home-search-input').addEventListener('keydown',function
 })
 document.getElementById('home-search').addEventListener('click',function(e){
   if(e.target.tagName!=='INPUT')this.querySelector('input').focus()
+})
+
+// ===== Keyboard Shortcuts =====
+document.addEventListener('keydown',function(e){
+  if(e.key==='/'&&e.target.tagName!=='INPUT'&&e.target.tagName!=='TEXTAREA'){
+    e.preventDefault()
+    var inp=document.getElementById('home-search-input')
+    if(inp)inp.focus()
+  }
+  if(e.key==='Escape'){
+    var o=document.getElementById('detail-overlay')
+    if(o.classList.contains('open'))document.getElementById('detail-back').click()
+  }
 })
 </script>
 </body>

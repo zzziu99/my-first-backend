@@ -3,12 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>校园百事通 · 概览</title>
+<title>校园百事通</title>
 <script src="https://unpkg.com/lucide@latest"></script>
 <style>
-/* ============================================================
-   TOKENS — ≤5 colors: 1 primary + 3 semantic + grayscale
-   ============================================================ */
+/* ========== TOKENS (≤5 colors) ========== */
 :root {
   --primary: #4F6CF7;
   --success: #22C55E;
@@ -22,237 +20,101 @@
   --border: #E5E7EB;
 }
 
-/* ============================================================
-   RESET
-   ============================================================ */
+/* ========== RESET ========== */
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-
 body {
-  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
-  font-size: 14px;
-  line-height: 1.5;
-  color: var(--text);
-  background: var(--bg);
-  -webkit-font-smoothing: antialiased;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+  font-size:14px;line-height:1.5;color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased;
 }
 
-/* ============================================================
-   12-COLUMN GRID — max-width 1200px, gutter 16px, page padding 24px
-   ============================================================ */
-.page {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 24px;
-}
+/* ========== LAYOUT: 12-col grid, max 1200px, gutter 16px, page padding 24px ========== */
+.page {max-width:1200px;margin:0 auto;padding:24px}
+.grid {display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+.col-span-4{grid-column:span 4}
+.col-span-6{grid-column:span 6}
+.col-span-12{grid-column:span 12}
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 16px;
-}
+/* ========== SPACING: only 8pt system [4,8,16,24,32,48,64] ========== */
+.section{margin-top:32px}
+.section:first-child{margin-top:0}
+.mt-16{margin-top:16px}
+.mb-16{margin-bottom:16px}
 
-.col-span-4  { grid-column: span 4 }
-.col-span-6  { grid-column: span 6 }
-.col-span-12 { grid-column: span 12 }
+/* ========== TYPOGRAPHY ========== */
+h1{font-size:18px;font-weight:600;line-height:1.2}
+.section-title{font-size:18px;font-weight:600;line-height:1.2;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.section-title i{color:var(--text-tertiary)}
+.kpi-value{font-size:32px;font-weight:700;line-height:1;color:var(--text)}
 
-/* ============================================================
-   SPACING (8pt system: 4,8,16,24,32,48,64 only)
-   ============================================================ */
-.section  { margin-top: 32px }
-.section:first-child { margin-top: 0 }
+/* ========== CARD (immutable) ========== */
+.card{
+  background:var(--surface);border-radius:16px;padding:16px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.04);transition:all 200ms ease
+}
+.card:hover{transform:translateY(-2px)}
+.card:active{transform:scale(0.98)}
 
-.gap-8  { gap: 8px }
-.gap-16 { gap: 16px }
-.mt-16  { margin-top: 16px }
-.mb-16  { margin-bottom: 16px }
+/* ========== KPI: 120px, max 3/row ========== */
+.kpi{height:120px;display:flex;flex-direction:column;justify-content:center}
+.kpi-label{font-size:14px;color:var(--text-secondary);margin-top:4px}
+.kpi-trend{font-size:12px;color:var(--text-secondary);margin-top:4px;display:flex;align-items:center;gap:4px}
+.kpi-trend.up{color:var(--success)}
+.kpi-trend.down{color:var(--error)}
 
-/* ============================================================
-   TYPOGRAPHY — strict: KPI 32px bold · Title 18px s/lh1.2 · Body 14px · Sec 12px
-   ============================================================ */
-.kpi-value { font-size: 32px; font-weight: 700; line-height: 1; color: var(--text) }
+/* ========== LIST: flat, 72px, #E5E7EB divider, #F9FAFB hover ========== */
+.list{background:var(--surface);border-radius:0;box-shadow:none}
+.list-item{
+  height:72px;padding:16px;display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid #E5E7EB;cursor:pointer;transition:background 200ms ease,transform 200ms ease
+}
+.list-item:last-child{border-bottom:none}
+.list-item:hover{background:#F9FAFB}
+.list-item:active{transform:scale(0.98)}
+.list-item-left{display:flex;align-items:center;gap:8px}
+.list-item-icon{width:20px;height:20px;color:var(--text-tertiary);flex-shrink:0}
+.list-item:hover .list-item-icon{color:var(--primary)}
+.list-item-text{font-size:14px;color:var(--text)}
+.list-item-count{font-size:12px;color:var(--text-secondary)}
+.list-item-arrow{width:16px;height:16px;color:var(--text-tertiary)}
+.list-item:hover .list-item-arrow{color:var(--primary)}
 
-.section-title {
-  font-size: 18px;
-  font-weight: 600;
-  line-height: 1.2;
-  margin-bottom: 16px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.section-title i { color: var(--text-tertiary) }
+/* ========== HEADER ========== */
+.header{display:flex;align-items:center;gap:8px;padding:24px 0}
+.header-icon{width:24px;height:24px;color:var(--primary)}
 
-.body-text  { font-size: 14px; line-height: 1.5; color: var(--text) }
-.sec-text   { font-size: 12px; color: var(--text-secondary) }
+/* ========== SEARCH ========== */
+.search-box{display:flex;gap:8px}
+.search-input{
+  flex:1;height:40px;padding:8px 16px;border:1px solid var(--border);border-radius:8px;
+  font-size:14px;line-height:1.5;outline:none;transition:border-color 200ms ease
+}
+.search-input:focus{border-color:var(--primary)}
+.search-input::placeholder{color:var(--text-tertiary)}
+.search-btn{
+  height:40px;padding:8px 24px;background:var(--primary);color:#fff;border:none;border-radius:8px;
+  font-size:14px;font-weight:500;cursor:pointer;transition:all 200ms ease;
+  display:flex;align-items:center;gap:8px;white-space:nowrap
+}
+.search-btn:hover{transform:translateY(-2px)}
+.search-btn:active{transform:scale(0.98)}
+.search-btn i{color:#fff}
 
-/* ============================================================
-   CARD — immutable: radius 16px · padding 16px · fixed shadow · no variation
-   ============================================================ */
-.card {
-  background: var(--surface);
-  border-radius: 16px;
-  padding: 16px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.04);
-  transition: all 200ms ease;
-}
-.card:hover  { transform: translateY(-2px) }
-.card:active { transform: scale(0.98) }
+/* ========== SEARCH RESULT ========== */
+.search-result{display:none;margin-top:16px}
+.search-result.show{display:block}
+.result-card{padding:16px;background:var(--bg);border-radius:8px}
+.result-label{font-size:12px;color:var(--text-secondary);margin-bottom:4px;display:flex;align-items:center;gap:4px}
+.result-answer{font-size:14px;line-height:1.5;margin-top:4px}
+.result-source{font-size:12px;color:var(--text-tertiary);margin-top:8px}
 
-/* ============================================================
-   KPI — height 120px · max 3 per row · value + label + trend (↑↓)
-   ============================================================ */
-.kpi {
-  height: 120px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-.kpi-label {
-  font-size: 14px;
-  color: var(--text-secondary);
-  margin-top: 4px;
-}
-.kpi-trend {
-  font-size: 12px;
-  color: var(--text-secondary);
-  margin-top: 4px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-.kpi-trend.up   { color: var(--success) }
-.kpi-trend.down { color: var(--error) }
-
-/* ============================================================
-   LIST — flat (no card style) · 72px · 16px padding · #E5E7EB divider · #F9FAFB hover
-   ============================================================ */
-.list {
-  background: var(--surface);
-  border-radius: 0;
-  box-shadow: none;
-}
-.list-item {
-  height: 72px;
-  padding: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid #E5E7EB;
-  cursor: pointer;
-  transition: background 200ms ease;
-}
-.list-item:last-child { border-bottom: none }
-.list-item:hover  { background: #F9FAFB }
-.list-item:active { transform: scale(0.98) }
-.list-item-left {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.list-item-icon {
-  width: 20px; height: 20px;
-  color: var(--text-tertiary);
-  flex-shrink: 0;
-}
-.list-item-text {
-  font-size: 14px;
-  color: var(--text);
-}
-.list-item-count {
-  font-size: 12px;
-  color: var(--text-secondary);
-}
-.list-item-arrow {
-  width: 16px; height: 16px;
-  color: var(--text-tertiary);
-}
-
-/* ============================================================
-   HEADER
-   ============================================================ */
-.header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 24px 0;
-}
-.header h1 {
-  font-size: 18px;
-  font-weight: 600;
-  line-height: 1.2;
-}
-.header-icon {
-  width: 24px; height: 24px;
-  color: var(--primary);
-}
-
-/* ============================================================
-   SEARCH / ACTION
-   ============================================================ */
-.search-box {
-  display: flex;
-  gap: 8px;
-}
-.search-input {
-  flex: 1;
-  height: 40px;
-  padding: 8px 16px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  font-size: 14px;
-  line-height: 1.5;
-  outline: none;
-  transition: border-color 200ms ease;
-}
-.search-input:focus {
-  border-color: var(--primary);
-}
-.search-input::placeholder {
-  color: var(--text-tertiary);
-}
-.search-btn {
-  height: 40px;
-  padding: 8px 24px;
-  background: var(--primary);
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 200ms ease;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  white-space: nowrap;
-}
-.search-btn:hover  { transform: translateY(-2px) }
-.search-btn:active { transform: scale(0.98) }
-.search-btn i { color: #fff }
-
-.search-result {
-  margin-top: 16px;
-  padding: 16px;
-  background: var(--bg);
-  border-radius: 8px;
-  font-size: 14px;
-  line-height: 1.5;
-  display: none;
-}
-.search-result.show { display: block }
-.search-result .answer-label {
-  font-size: 12px;
-  color: var(--text-secondary);
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-.search-result .answer-source {
-  font-size: 12px;
-  color: var(--text-tertiary);
-  margin-top: 8px;
-}
+/* ========== QA EXPAND ========== */
+.qa-items{margin-top:0;overflow:hidden;max-height:0;transition:max-height 300ms ease}
+.qa-items.open{max-height:2000px}
+.qa-item{padding:16px 16px 16px 48px;border-bottom:1px solid #E5E7EB;background:var(--surface)}
+.qa-item:last-child{border-bottom:none}
+.qa-question{font-size:14px;font-weight:500;color:var(--text);margin-bottom:4px}
+.qa-answer{font-size:14px;color:var(--text-secondary);line-height:1.5}
+.qa-empty{padding:16px;text-align:center;font-size:12px;color:var(--text-tertiary)}
 </style>
 </head>
 <body>
@@ -265,7 +127,7 @@ body {
     <h1>校园百事通</h1>
   </div>
 
-  <!-- ═══ KPI SECTION — highest priority, top-left dominant ═══ -->
+  <!-- ═══ KPI ═══ -->
   <div class="grid section">
     <div class="card kpi col-span-4">
       <div class="kpi-value" id="kpi-categories">—</div>
@@ -284,30 +146,28 @@ body {
     </div>
   </div>
 
-  <!-- ═══ ACTIONS SECTION — functional entry ═══ -->
+  <!-- ═══ ACTIONS ═══ -->
   <div class="grid section">
     <div class="card col-span-12">
       <div class="search-box">
         <input type="text" class="search-input" id="search-input" placeholder="搜索校园知识…">
-        <button class="search-btn" id="search-btn">
-          <i data-lucide="search" size="16"></i>
-          搜索
-        </button>
+        <button class="search-btn" id="search-btn"><i data-lucide="search" size="16"></i>搜索</button>
       </div>
-      <div class="search-result" id="search-result"></div>
+      <div class="search-result" id="search-result">
+        <div class="result-card" id="result-card">
+          <div class="result-label"><i data-lucide="message-circle" size="14"></i><span id="result-label-text">回答</span></div>
+          <div class="result-answer" id="result-answer"></div>
+          <div class="result-source" id="result-source"></div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- ═══ CONTENT SECTION — category list ═══ -->
+  <!-- ═══ CONTENT ═══ -->
   <div class="grid section">
     <div class="col-span-12">
-      <div class="section-title">
-        <i data-lucide="book-open"></i>
-        分类导航
-      </div>
-      <div class="list" id="category-list">
-        <!-- populated by JS -->
-      </div>
+      <div class="section-title"><i data-lucide="book-open"></i>分类导航</div>
+      <div class="list" id="category-list"></div>
     </div>
   </div>
 
@@ -316,62 +176,135 @@ body {
 <script>
 lucide.createIcons();
 
-/* ========== Load KPI data ========== */
-fetch('/api/stats')
-  .then(r => r.json())
-  .then(d => {
-    document.getElementById('kpi-categories').textContent = d.categories;
-    document.getElementById('kpi-qa').textContent = d.total_qa;
-    document.getElementById('kpi-avg').textContent = d.avg_per_category;
-    updateTrend('trend-categories', d.categories, 0);
-    updateTrend('trend-qa', d.total_qa, d.categories);
-    updateTrend('trend-avg', d.avg_per_category, 0);
-  })
-  .catch(() => {});
+const ICON_MAP = {
+  '图书馆':'book','食堂':'utensils-crossed','宿舍':'building-2',
+  '校园服务':'briefcase','选课':'file-text','考试':'clipboard-check',
+  '毕业要求':'graduation-cap','奖学金':'award','德育积分':'star',
+  '综合素质实践':'users','社团':'heart','其他':'more-horizontal'
+};
 
-function updateTrend(id, val, ref) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  if (ref && ref > 0 && val > ref) {
-    el.className = 'kpi-trend up';
-    el.innerHTML = '<i data-lucide="trending-up" size="14"></i> 较均值高 ' + Math.round((val - ref) / ref * 100) + '%';
-  } else if (ref && ref > 0 && val < ref) {
-    el.className = 'kpi-trend down';
-    el.innerHTML = '<i data-lucide="trending-down" size="14"></i> 较均值低 ' + Math.round((ref - val) / ref * 100) + '%';
-  } else {
-    el.innerHTML = '<span>— 稳定</span>';
-  }
-  lucide.createIcons();
-}
+let allData = {};     // { categoryName: [qaItems] }
+let categoryOrder = [];
+let searchIndex = []; // [{category, question, answer}]
 
-/* ========== Load category list ========== */
-let categories = [];
+// ========== Load data ==========
 fetch('/api/categories')
   .then(r => r.json())
-  .then(list => {
-    categories = list;
-    const container = document.getElementById('category-list');
-    container.innerHTML = list.map(c => {
-      const iconMap = {
-        '图书馆':'book','食堂':'utensils-crossed','宿舍':'building-2',
-        '校园服务':'briefcase','选课':'file-text','考试':'clipboard-check',
-        '毕业要求':'graduation-cap','奖学金':'award','德育积分':'star',
-        '综合素质实践':'users','社团':'heart','其他':'more-horizontal'
-      };
-      const icon = iconMap[c] || 'file';
-      return '<div class="list-item" data-category="' + c + '">'
-        + '<div class="list-item-left">'
-        + '<i data-lucide="' + icon + '" class="list-item-icon"></i>'
-        + '<span class="list-item-text">' + c + '</span>'
-        + '</div>'
-        + '<i data-lucide="chevron-right" class="list-item-arrow"></i>'
-        + '</div>';
-    }).join('');
+  .then(cats => {
+    categoryOrder = cats;
+    const promises = cats.map(cat =>
+      fetch('/api/qa?category=' + encodeURIComponent(cat))
+        .then(r => r.json())
+        .then(items => { allData[cat] = items; })
+    );
+    return Promise.all(promises);
+  })
+  .then(() => {
+    buildSearchIndex();
+    renderKPIs();
+    renderCategoryList();
     lucide.createIcons();
   })
   .catch(() => {});
 
-/* ========== Search ========== */
+function buildSearchIndex() {
+  searchIndex = [];
+  for (const cat of categoryOrder) {
+    const items = allData[cat] || [];
+    for (const item of items) {
+      searchIndex.push({ category: cat, question: item.question, answer: item.answer });
+    }
+  }
+}
+
+// ========== KPI ==========
+function renderKPIs() {
+  let totalQA = 0;
+  const counts = {};
+  for (const cat of categoryOrder) {
+    const n = (allData[cat] || []).length;
+    counts[cat] = n;
+    totalQA += n;
+  }
+  const catCount = categoryOrder.length;
+  const avg = catCount ? Math.round(totalQA / catCount) : 0;
+
+  document.getElementById('kpi-categories').textContent = catCount;
+  document.getElementById('kpi-qa').textContent = totalQA;
+  document.getElementById('kpi-avg').textContent = avg;
+
+  setTrend('trend-categories', catCount, avg, '类');
+  setTrend('trend-qa', totalQA, avg * catCount, '条');
+  setTrend('trend-avg', avg, avg, '条');
+}
+
+function setTrend(id, val, ref, unit) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  if (val > ref) {
+    el.className = 'kpi-trend up';
+    el.innerHTML = '<i data-lucide="trending-up" size="14"></i> +' + (val - ref) + unit;
+  } else if (val < ref) {
+    el.className = 'kpi-trend down';
+    el.innerHTML = '<i data-lucide="trending-down" size="14"></i> ' + (val - ref) + unit;
+  } else {
+    el.innerHTML = '<span>— 持平</span>';
+  }
+  lucide.createIcons();
+}
+
+// ========== Category list ==========
+function renderCategoryList() {
+  const container = document.getElementById('category-list');
+  container.innerHTML = categoryOrder.map(cat => {
+    const count = (allData[cat] || []).length;
+    const icon = ICON_MAP[cat] || 'file';
+    return '<div class="list-item" data-category="' + cat + '">'
+      + '<div class="list-item-left">'
+      + '<i data-lucide="' + icon + '" class="list-item-icon"></i>'
+      + '<span class="list-item-text">' + cat + '</span>'
+      + '</div>'
+      + '<div style="display:flex;align-items:center;gap:8px">'
+      + '<span class="list-item-count">' + count + ' 条</span>'
+      + '<i data-lucide="chevron-right" class="list-item-arrow"></i>'
+      + '</div>'
+      + '</div>';
+  }).join('');
+  lucide.createIcons();
+}
+
+// ========== Click category → expand Q&A ==========
+document.getElementById('category-list').addEventListener('click', function(e) {
+  const item = e.target.closest('.list-item');
+  if (!item) return;
+  const cat = item.dataset.category;
+  const existing = item.nextElementSibling;
+  if (existing && existing.classList.contains('qa-items')) {
+    existing.classList.toggle('open');
+    const arrow = item.querySelector('.list-item-arrow');
+    if (arrow) arrow.style.transform = existing.classList.contains('open') ? 'rotate(90deg)' : '';
+    return;
+  }
+  const items = allData[cat] || [];
+  const div = document.createElement('div');
+  div.className = 'qa-items';
+  if (items.length === 0) {
+    div.innerHTML = '<div class="qa-empty">暂无数据</div>';
+  } else {
+    div.innerHTML = items.map(q => (
+      '<div class="qa-item">'
+      + '<div class="qa-question">' + q.question + '</div>'
+      + '<div class="qa-answer">' + q.answer + '</div>'
+      + '</div>'
+    )).join('');
+  }
+  item.parentNode.insertBefore(div, item.nextSibling);
+  requestAnimationFrame(() => div.classList.add('open'));
+  const arrow = item.querySelector('.list-item-arrow');
+  if (arrow) arrow.style.transform = 'rotate(90deg)';
+});
+
+// ========== Search ==========
 document.getElementById('search-btn').addEventListener('click', doSearch);
 document.getElementById('search-input').addEventListener('keydown', function(e) {
   if (e.key === 'Enter') doSearch();
@@ -380,38 +313,32 @@ document.getElementById('search-input').addEventListener('keydown', function(e) 
 function doSearch() {
   const q = document.getElementById('search-input').value.trim();
   const el = document.getElementById('search-result');
-  if (!q) { el.classList.remove('show'); return; }
+  if (!q || searchIndex.length === 0) { el.classList.remove('show'); return; }
 
-  el.innerHTML = '<div class="answer-label"><i data-lucide="loader" size="14"></i> 搜索中…</div>';
+  const kw = q.toLowerCase();
+  const results = [];
+  for (const item of searchIndex) {
+    let score = 0;
+    if (item.question.includes(kw) || item.answer.includes(kw)) score += 100;
+    if (item.question.toLowerCase().includes(kw)) score += 20;
+    if (item.answer.toLowerCase().includes(kw)) score += 10;
+    if (score > 0) results.push({ ...item, score });
+  }
+  results.sort((a, b) => b.score - a.score);
+
+  if (results.length === 0) {
+    document.getElementById('result-label-text').textContent = '未找到结果';
+    document.getElementById('result-answer').textContent = '抱歉，知识库中没有找到相关答案，请咨询辅导员或教务处。';
+    document.getElementById('result-source').textContent = '';
+  } else {
+    const best = results[0];
+    document.getElementById('result-label-text').textContent = '回答';
+    document.getElementById('result-answer').textContent = best.answer;
+    document.getElementById('result-source').textContent = '来源：' + best.category + ' · ' + best.question;
+  }
   el.classList.add('show');
   lucide.createIcons();
-
-  fetch('/api/handbook', {
-    method: 'POST',
-    headers: {'Content-Type':'application/json'},
-    body: JSON.stringify({question: q})
-  })
-  .then(r => r.json())
-  .then(d => {
-    el.innerHTML = '<div class="answer-label"><i data-lucide="message-circle" size="14"></i> 回答</div>'
-      + '<div>' + d.answer + '</div>'
-      + (d.category ? '<div class="answer-source">来源：' + d.category + ' · ' + d.related + '</div>' : '');
-    lucide.createIcons();
-  })
-  .catch(() => {
-    el.innerHTML = '<div class="answer-label" style="color:var(--error)"><i data-lucide="alert-circle" size="14"></i> 搜索失败</div>';
-    lucide.createIcons();
-  });
 }
-
-/* ========== Category click ========== */
-document.getElementById('category-list').addEventListener('click', function(e) {
-  const item = e.target.closest('.list-item');
-  if (!item) return;
-  const cat = item.dataset.category;
-  document.getElementById('search-input').value = cat;
-  doSearch();
-});
 </script>
 </body>
 </html>

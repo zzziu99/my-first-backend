@@ -2,362 +2,625 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
 <title>校园百事通</title>
 <script src="https://unpkg.com/lucide@latest"></script>
 <style>
-/* ========== CSS VARIABLE SYSTEM ========== */
+/* ========== TOKENS ========== */
 :root {
-  --sp-4: 4px;
-  --sp-8: 8px;
-  --sp-16: 16px;
-  --sp-24: 24px;
-  --sp-32: 32px;
-  --sp-48: 48px;
-  --sp-64: 64px;
-
-  --primary: #4F6CF7;
-  --success: #22C55E;
-  --warning: #F59E0B;
-  --error: #EF4444;
-  --gray-50: #F9FAFB;
-  --gray-100: #F3F4F6;
-  --gray-200: #E5E7EB;
-  --gray-300: #D1D5DB;
-  --gray-400: #9CA3AF;
-  --gray-500: #6B7280;
-  --gray-600: #4B5563;
-  --gray-700: #374151;
-  --gray-900: #111827;
-
-  --surface: #FFFFFF;
-  --shadow-card: 0 4px 20px rgba(0,0,0,0.04);
-
-  --font-kpi: 30px bold;
-  --font-title: 18px 600;
-  --font-body: 14px;
-  --font-secondary: 12px;
+  --coral: #E85D4A;
+  --coral-dark: #D04435;
+  --coral-light: #FFF0ED;
+  --coral-glow: rgba(232,93,74,0.15);
+  --sunny: #F0B429;
+  --sunny-light: #FFF8E8;
+  --mint: #34B78A;
+  --mint-light: #E8F8F2;
+  --slate: #4A5568;
+  --slate-light: #F0F2F5;
+  --sp-4:4px;--sp-8:8px;--sp-16:16px;--sp-24:24px;--sp-32:32px;--sp-48:48px;--sp-64:64px;
+  --radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:20px;--radius-2xl:24px;
+  --shadow-sm:0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md:0 2px 8px rgba(0,0,0,0.06);
+  --shadow-lg:0 4px 24px rgba(0,0,0,0.08);
+  --safe-b:env(safe-area-inset-bottom,0px);
+  --safe-t:env(safe-area-inset-top,0px);
 }
 
 /* ========== RESET ========== */
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-body {
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
-  font-size:var(--font-body);line-height:1.5;color:var(--gray-900);background:var(--gray-50);-webkit-font-smoothing:antialiased;
+html{height:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans SC","PingFang SC",sans-serif;
+  font-size:14px;line-height:1.5;color:#1A1A2E;background:#FDF8F5;-webkit-font-smoothing:antialiased;
+  height:100%;overflow:hidden
 }
 
-/* ========== LAYOUT: 12-col grid, max 1200px, gutter 16px, page padding 24px ========== */
-.page {max-width:1200px;margin:0 auto;padding:var(--sp-24)}
-.grid {display:grid;grid-template-columns:repeat(12,1fr);gap:var(--sp-16)}
-.col-span-4{grid-column:span 4}
-.col-span-6{grid-column:span 6}
-.col-span-12{grid-column:span 12}
-
-/* ========== SPACING: only 8pt system [4,8,16,24,32,48,64] ========== */
-.section{margin-top:var(--sp-32)}
-.section:first-child{margin-top:0}
-.mt-16{margin-top:var(--sp-16)}
-.mb-16{margin-bottom:var(--sp-16)}
-
-/* ========== TYPOGRAPHY ========== */
-h1{font:var(--font-title)}
-.section-title{font:var(--font-title);margin-bottom:var(--sp-16);display:flex;align-items:center;gap:var(--sp-8)}
-.section-title i{color:var(--gray-400)}
-.kpi-value{font:var(--font-kpi);line-height:1;color:var(--gray-900)}
-
-/* ========== CARD (immutable) ========== */
-.card{
-  background:var(--surface);border-radius:var(--sp-16);padding:var(--sp-16);
-  box-shadow:var(--shadow-card);transition:all 200ms ease
-}
-.card:hover{transform:translateY(-2px)}
-.card:active{transform:scale(0.98)}
-
-/* ========== KPI: 120px, max 3/row ========== */
-.kpi{height:120px;display:flex;flex-direction:column;justify-content:center}
-.kpi-label{font-size:var(--font-body);color:var(--gray-500);margin-top:var(--sp-4)}
-.kpi-trend{font-size:var(--font-secondary);color:var(--gray-500);margin-top:var(--sp-4);display:flex;align-items:center;gap:var(--sp-4)}
-.kpi-trend.up{color:var(--success)}
-.kpi-trend.down{color:var(--error)}
-
-/* ========== LIST: flat, 72px, #E5E7EB divider, #F9FAFB hover ========== */
-.list{background:var(--surface);border-radius:0;box-shadow:none}
-.list-item{
-  height:72px;padding:var(--sp-16);display:flex;align-items:center;justify-content:space-between;
-  border-bottom:1px solid var(--gray-200);cursor:pointer;transition:background 200ms ease,transform 200ms ease
-}
-.list-item:last-child{border-bottom:none}
-.list-item:hover{background:var(--gray-50)}
-.list-item:active{transform:scale(0.98)}
-.list-item-left{display:flex;align-items:center;gap:var(--sp-8)}
-.list-item-icon{width:20px;height:20px;color:var(--gray-400);flex-shrink:0}
-.list-item:hover .list-item-icon{color:var(--primary)}
-.list-item-text{font-size:var(--font-body);color:var(--gray-900)}
-.list-item-count{font-size:var(--font-secondary);color:var(--gray-500)}
-.list-item-arrow{width:16px;height:16px;color:var(--gray-400)}
-.list-item:hover .list-item-arrow{color:var(--primary)}
+/* ========== LAYOUT ========== */
+.app{max-width:640px;margin:0 auto;height:100%;display:flex;flex-direction:column;position:relative}
+@media(min-width:768px){.app{max-width:680px}}
 
 /* ========== HEADER ========== */
-.header{display:flex;align-items:center;gap:var(--sp-8);padding:var(--sp-24) 0}
-.header-icon{width:24px;height:24px;color:var(--primary)}
-
-/* ========== SEARCH ========== */
-.search-box{display:flex;gap:var(--sp-8)}
-.search-input{
-  flex:1;height:40px;padding:var(--sp-8) var(--sp-16);border:1px solid var(--gray-200);border-radius:var(--sp-8);
-  font-size:var(--font-body);line-height:1.5;outline:none;transition:border-color 200ms ease
+.header{
+  position:sticky;top:0;z-index:20;padding:var(--sp-16) var(--sp-24) var(--sp-12);
+  background:rgba(253,248,245,0.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  display:flex;align-items:center;justify-content:space-between;padding-top:calc(var(--sp-16) + var(--safe-t))
 }
-.search-input:focus{border-color:var(--primary)}
-.search-input::placeholder{color:var(--gray-400)}
-.search-btn{
-  height:40px;padding:var(--sp-8) var(--sp-24);background:var(--primary);color:var(--surface);border:none;border-radius:var(--sp-8);
-  font-size:var(--font-body);font-weight:500;cursor:pointer;transition:all 200ms ease;
-  display:flex;align-items:center;gap:var(--sp-8);white-space:nowrap
+.header-title{font-size:18px;font-weight:700;line-height:1.2;display:flex;align-items:center;gap:var(--sp-8)}
+.header-title i{color:var(--coral)}
+
+/* ========== SCROLL AREA ========== */
+.main{flex:1;overflow-y:auto;padding:0 var(--sp-24) 80px;-webkit-overflow-scrolling:touch}
+.tab{display:none;animation:fadeIn .25s ease}
+.tab.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ========== HERO ========== */
+.hero{
+  background:linear-gradient(135deg,var(--coral-light),#FFF5E6);border-radius:var(--radius-2xl);
+  padding:var(--sp-24) var(--sp-24) var(--sp-32);margin-top:var(--sp-8);position:relative;overflow:hidden
 }
-.search-btn:hover{transform:translateY(-2px)}
-.search-btn:active{transform:scale(0.98)}
-.search-btn i{color:var(--surface)}
+.hero::before{
+  content:'';position:absolute;top:-40px;right:-40px;width:140px;height:140px;
+  background:radial-gradient(circle,var(--coral-glow) 0%,transparent 70%);border-radius:50%
+}
+.hero h2{font-size:24px;font-weight:800;line-height:1.3}
+.hero h2 span{color:var(--coral)}
+.hero p{font-size:14px;color:var(--slate);margin-top:var(--sp-4)}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:var(--sp-4);margin-top:var(--sp-12);
+  background:var(--coral);color:#fff;font-size:12px;font-weight:600;padding:4px 12px;border-radius:20px
+}
+.hero-badge i{width:14px;height:14px}
 
-/* ========== SEARCH RESULT ========== */
-.search-result{display:none;margin-top:var(--sp-16)}
-.search-result.show{display:block}
-.result-card{padding:var(--sp-16);background:var(--gray-50);border-radius:var(--sp-8)}
-.result-label{font-size:var(--font-secondary);color:var(--gray-500);margin-bottom:var(--sp-4);display:flex;align-items:center;gap:var(--sp-4)}
-.result-answer{font-size:var(--font-body);line-height:1.5;margin-top:var(--sp-4)}
-.result-source{font-size:var(--font-secondary);color:var(--gray-400);margin-top:var(--sp-8)}
+/* ========== SEARCH BAR ========== */
+.search-bar{
+  display:flex;align-items:center;gap:var(--sp-8);margin-top:var(--sp-16);
+  background:#fff;border-radius:var(--radius-xl);padding:0 var(--sp-16);
+  box-shadow:var(--shadow-sm);border:1px solid rgba(0,0,0,0.04);height:44px
+}
+.search-bar i{color:#aaa;flex-shrink:0}
+.search-bar input{
+  flex:1;border:none;outline:none;font-size:14px;background:transparent;height:100%
+}
+.search-bar input::placeholder{color:#bbb}
 
-/* ========== QA EXPAND ========== */
-.qa-items{margin-top:0;overflow:hidden;max-height:0;transition:max-height 300ms ease}
-.qa-items.open{max-height:2000px}
-.qa-item{padding:var(--sp-16) var(--sp-16) var(--sp-16) var(--sp-48);border-bottom:1px solid var(--gray-200);background:var(--surface)}
-.qa-item:last-child{border-bottom:none}
-.qa-question{font-size:var(--font-body);font-weight:500;color:var(--gray-900);margin-bottom:var(--sp-4)}
-.qa-answer{font-size:var(--font-body);color:var(--gray-500);line-height:1.5}
-.qa-empty{padding:var(--sp-16);text-align:center;font-size:var(--font-secondary);color:var(--gray-400)}
+/* ========== KPI ========== */
+.kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-8);margin-top:var(--sp-16)}
+.kpi-card{
+  background:#fff;border-radius:var(--radius-lg);padding:var(--sp-12) var(--sp-16);
+  box-shadow:var(--shadow-sm);text-align:center;
+  transition:all 200ms ease;cursor:default
+}
+.kpi-card:hover{transform:translateY(-2px)}
+.kpi-value{font-size:26px;font-weight:800;line-height:1.2}
+.kpi-card:nth-child(1) .kpi-value{color:var(--coral)}
+.kpi-card:nth-child(2) .kpi-value{color:#1A1A2E}
+.kpi-card:nth-child(3) .kpi-value{color:var(--mint)}
+.kpi-label{font-size:12px;color:var(--slate);margin-top:var(--sp-2)}
+
+/* ========== SECTION HEADER ========== */
+.section-header{
+  display:flex;align-items:center;justify-content:space-between;margin:var(--sp-24) 0 var(--sp-12)
+}
+.section-header h3{font-size:16px;font-weight:700}
+.section-header a{font-size:12px;color:var(--coral);text-decoration:none;font-weight:500}
+
+/* ========== QUICK GRID ========== */
+.quick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-8)}
+.quick-item{
+  display:flex;flex-direction:column;align-items:center;gap:var(--sp-6);
+  background:#fff;border-radius:var(--radius-lg);padding:var(--sp-16) var(--sp-8);
+  box-shadow:var(--shadow-sm);cursor:pointer;transition:all 200ms ease;border:none;font-family:inherit;font-size:13px;color:#1A1A2E
+}
+.quick-item:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.quick-item:active{transform:scale(0.96)}
+.quick-icon{
+  width:40px;height:40px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center
+}
+.quick-icon i{width:20px;height:20px;color:#fff}
+.quick-icon.coral{background:var(--coral)}
+.quick-icon.sunny{background:var(--sunny)}
+.quick-icon.mint{background:var(--mint)}
+.quick-icon.slate{background:var(--slate)}
+
+/* ========== NOTICE LIST ========== */
+.notice-list{display:flex;flex-direction:column;gap:var(--sp-8)}
+.notice-item{
+  display:flex;align-items:center;gap:var(--sp-12);background:#fff;
+  border-radius:var(--radius-lg);padding:var(--sp-12) var(--sp-16);box-shadow:var(--shadow-sm);
+  cursor:pointer;transition:all 200ms ease
+}
+.notice-item:hover{transform:translateY(-1px)}
+.notice-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.notice-dot.coral{background:var(--coral)}
+.notice-dot.sunny{background:var(--sunny)}
+.notice-dot.mint{background:var(--mint)}
+.notice-text{flex:1;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.notice-time{font-size:12px;color:#aaa;flex-shrink:0}
+
+/* ========== BROWSE TAB ========== */
+.chip-scroll{
+  display:flex;gap:var(--sp-8);overflow-x:auto;padding:var(--sp-4) 0 var(--sp-12);
+  -webkit-overflow-scrolling:touch;scrollbar-width:none
+}
+.chip-scroll::-webkit-scrollbar{display:none}
+.chip{
+  white-space:nowrap;padding:6px var(--sp-16);border-radius:20px;font-size:13px;font-weight:500;
+  border:none;cursor:pointer;transition:all 200ms ease;font-family:inherit;
+  background:rgba(0,0,0,0.04);color:var(--slate)
+}
+.chip:hover{background:var(--coral-light);color:var(--coral)}
+.chip.active{background:var(--coral);color:#fff}
+
+.cat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--sp-8);margin-top:var(--sp-4)}
+.cat-card{
+  display:flex;align-items:center;gap:var(--sp-12);background:#fff;border-radius:var(--radius-lg);
+  padding:var(--sp-16);box-shadow:var(--shadow-sm);cursor:pointer;transition:all 200ms ease;border:none;font-family:inherit;text-align:left
+}
+.cat-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.cat-card:active{transform:scale(0.97)}
+.cat-card-icon{
+  width:36px;height:36px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;flex-shrink:0
+}
+.cat-card-icon i{width:18px;height:18px;color:#fff}
+.cat-card-info{flex:1;min-width:0}
+.cat-card-name{font-size:14px;font-weight:600;color:#1A1A2E}
+.cat-card-count{font-size:12px;color:#aaa;margin-top:2px}
+.cat-card-arrow{color:#ccc;flex-shrink:0}
+
+/* ========== CHAT TAB ========== */
+.chat-area{display:flex;flex-direction:column;padding-bottom:var(--sp-8)}
+.chat-msg{display:flex;gap:var(--sp-10);margin-bottom:var(--sp-16);animation:fadeIn .3s ease}
+.chat-msg.user{flex-direction:row-reverse}
+.chat-avatar{
+  width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  font-size:12px;font-weight:700;color:#fff
+}
+.chat-avatar.bot{background:var(--coral)}
+.chat-avatar.user{background:var(--slate)}
+.chat-bubble{
+  max-width:80%;padding:var(--sp-12) var(--sp-16);border-radius:var(--radius-lg);
+  font-size:14px;line-height:1.6
+}
+.chat-msg.bot .chat-bubble{background:#fff;box-shadow:var(--shadow-sm);border-bottom-left-radius:var(--sp-4)}
+.chat-msg.user .chat-bubble{background:var(--coral);color:#fff;border-bottom-right-radius:var(--sp-4)}
+.chat-msg.user .chat-bubble a{color:rgba(255,255,255,0.85);text-decoration:underline}
+.chat-welcome{
+  text-align:center;padding:var(--sp-32) var(--sp-16) var(--sp-24)
+}
+.chat-welcome .logo{
+  width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--coral),var(--coral-dark));
+  display:flex;align-items:center;justify-content:center;margin:0 auto var(--sp-16)
+}
+.chat-welcome .logo i{width:28px;height:28px;color:#fff}
+.chat-welcome h3{font-size:18px;font-weight:700}
+.chat-welcome p{font-size:13px;color:var(--slate);margin-top:var(--sp-4)}
+.quick-chips{display:flex;flex-wrap:wrap;gap:var(--sp-8);justify-content:center;margin-top:var(--sp-16)}
+.quick-chip{
+  padding:8px var(--sp-16);border-radius:20px;font-size:13px;font-weight:500;
+  background:var(--coral-light);color:var(--coral-dark);border:none;cursor:pointer;
+  transition:all 200ms ease;font-family:inherit
+}
+.quick-chip:hover{background:var(--coral);color:#fff}
+
+.chat-input-bar{
+  position:sticky;bottom:0;background:#FDF8F5;padding:var(--sp-8) 0 var(--sp-8);
+  display:flex;gap:var(--sp-8);align-items:center;
+  padding-bottom:calc(var(--sp-8) + var(--safe-b))
+}
+.chat-input{
+  flex:1;height:42px;border-radius:21px;border:1px solid rgba(0,0,0,0.08);
+  padding:0 var(--sp-16);font-size:14px;outline:none;background:#fff;font-family:inherit
+}
+.chat-input:focus{border-color:var(--coral)}
+.chat-send{
+  width:42px;height:42px;border-radius:50%;background:var(--coral);color:#fff;
+  border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:all 200ms ease;flex-shrink:0
+}
+.chat-send:hover{transform:scale(1.05)}
+.chat-send:active{transform:scale(0.95)}
+.chat-send i{width:18px;height:18px;color:#fff}
+
+/* ========== PROFILE TAB ========== */
+.profile-card{
+  background:linear-gradient(135deg,var(--coral),#D04435);border-radius:var(--radius-2xl);
+  padding:var(--sp-24);margin-top:var(--sp-8);color:#fff;position:relative;overflow:hidden
+}
+.profile-card::before{
+  content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;
+  background:rgba(255,255,255,0.08);border-radius:50%
+}
+.profile-row{display:flex;align-items:center;gap:var(--sp-16)}
+.profile-avatar{
+  width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,0.2);
+  display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700
+}
+.profile-info h3{font-size:18px;font-weight:700}
+.profile-info p{font-size:13px;opacity:0.8;margin-top:2px}
+.profile-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-8);margin-top:var(--sp-20)}
+.profile-stat{text-align:center}
+.profile-stat-num{font-size:20px;font-weight:800}
+.profile-stat-label{font-size:11px;opacity:0.7;margin-top:2px}
+
+.profile-section{margin-top:var(--sp-24)}
+.profile-section h4{font-size:16px;font-weight:700;margin-bottom:var(--sp-8)}
+.profile-list{display:flex;flex-direction:column;gap:2px;background:#fff;border-radius:var(--radius-lg);overflow:hidden}
+.profile-item{
+  display:flex;align-items:center;gap:var(--sp-12);padding:var(--sp-14) var(--sp-16);
+  cursor:pointer;transition:background 200ms ease;border:none;background:#fff;font-family:inherit;font-size:14px;color:#1A1A2E;text-align:left;width:100%
+}
+.profile-item:hover{background:#FDF8F5}
+.profile-item:active{background:var(--coral-light)}
+.profile-item i:first-child{color:var(--coral);width:20px;height:20px}
+.profile-item .spacer{flex:1}
+.profile-item .arrow{color:#ccc;width:16px;height:16px}
+.profile-item .badge{
+  font-size:11px;background:var(--coral);color:#fff;padding:2px 8px;border-radius:10px;font-weight:600
+}
+
+/* ========== BOTTOM NAV ========== */
+.nav{
+  position:fixed;bottom:var(--sp-16);left:50%;transform:translateX(-50%);z-index:30;
+  display:flex;align-items:center;gap:var(--sp-4);
+  background:rgba(255,255,255,0.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-radius:var(--radius-2xl);padding:var(--sp-4);
+  box-shadow:0 4px 24px rgba(0,0,0,0.1);
+  padding-bottom:calc(var(--sp-4) + var(--safe-b)*0.3);
+  max-width:calc(100vw - 32px)
+}
+.nav-btn{
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  padding:6px var(--sp-16);border-radius:var(--radius-xl);border:none;background:transparent;
+  cursor:pointer;transition:all 200ms ease;font-family:inherit;min-width:56px
+}
+.nav-btn i{width:22px;height:22px;color:#999;transition:color 200ms ease}
+.nav-btn span{font-size:10px;color:#999;font-weight:500;transition:color 200ms ease}
+.nav-btn.active{background:var(--coral)}
+.nav-btn.active i,.nav-btn.active span{color:#fff}
+.nav-btn:active{transform:scale(0.92)}
+
+/* ========== OVERLAY/DETAIL ========== */
+.detail-overlay{
+  position:fixed;top:0;left:0;right:0;bottom:0;z-index:40;
+  background:#FDF8F5;display:none;flex-direction:column;animation:slideUp .3s ease
+}
+.detail-overlay.open{display:flex}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.detail-header{
+  display:flex;align-items:center;gap:var(--sp-12);padding:var(--sp-12) var(--sp-16);
+  padding-top:calc(var(--sp-12) + var(--safe-t));
+  background:rgba(253,248,245,0.85);backdrop-filter:blur(12px);position:sticky;top:0;z-index:1
+}
+.detail-back{
+  width:36px;height:36px;border-radius:50%;border:none;background:rgba(0,0,0,0.04);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background 200ms ease
+}
+.detail-back:hover{background:rgba(0,0,0,0.08)}
+.detail-back i{width:18px;height:18px;color:#1A1A2E}
+.detail-title{font-size:16px;font-weight:700}
+.detail-body{flex:1;overflow-y:auto;padding:var(--sp-8) var(--sp-16) var(--sp-24);-webkit-overflow-scrolling:touch}
+.detail-qa-item{
+  background:#fff;border-radius:var(--radius-lg);padding:var(--sp-16);
+  margin-bottom:var(--sp-8);box-shadow:var(--shadow-sm)
+}
+.detail-qa-q{
+  font-size:14px;font-weight:600;color:#1A1A2E;margin-bottom:var(--sp-6);
+  display:flex;gap:var(--sp-6)
+}
+.detail-qa-q::before{content:'Q';color:var(--coral);font-weight:800;flex-shrink:0}
+.detail-qa-a{
+  font-size:14px;color:var(--slate);line-height:1.6;
+  display:flex;gap:var(--sp-6)
+}
+.detail-qa-a::before{content:'A';color:var(--mint);font-weight:800;flex-shrink:0}
+
+/* ========== UTILITY ========== */
+.spacer{flex:1}
+.hidden{display:none!important}
 </style>
 </head>
 <body>
 
-<div class="page">
+<div class="app">
 
-  <!-- ═══ HEADER ═══ -->
-  <div class="header">
-    <i data-lucide="graduation-cap" class="header-icon"></i>
-    <h1>校园百事通</h1>
-  </div>
+  <!-- ===== HEADER ===== -->
+  <header class="header">
+    <div class="header-title"><i data-lucide="graduation-cap"></i>校园百事通</div>
+    <div style="display:flex;gap:var(--sp-4)">
+      <span style="font-size:12px;color:#aaa;display:flex;align-items:center;gap:4px" id="header-time">
+        <i data-lucide="clock" style="width:14px;height:14px"></i><span id="time-display"></span>
+      </span>
+    </div>
+  </header>
 
-  <!-- ═══ KPI ═══ -->
-  <div class="grid section">
-    <div class="card kpi col-span-4">
-      <div class="kpi-value" id="kpi-categories">—</div>
-      <div class="kpi-label">总分类</div>
-      <div class="kpi-trend" id="trend-categories"></div>
-    </div>
-    <div class="card kpi col-span-4">
-      <div class="kpi-value" id="kpi-qa">—</div>
-      <div class="kpi-label">知识条目</div>
-      <div class="kpi-trend" id="trend-qa"></div>
-    </div>
-    <div class="card kpi col-span-4">
-      <div class="kpi-value" id="kpi-avg">—</div>
-      <div class="kpi-label">平均每类</div>
-      <div class="kpi-trend" id="trend-avg"></div>
-    </div>
-  </div>
+  <!-- ===== MAIN SCROLL AREA ===== -->
+  <div class="main" id="main-scroll">
 
-  <!-- ═══ ACTIONS ═══ -->
-  <div class="grid section">
-    <div class="card col-span-12">
-      <div class="search-box">
-        <input type="text" class="search-input" id="search-input" placeholder="搜索校园知识…">
-        <button class="search-btn" id="search-btn"><i data-lucide="search" size="16"></i>搜索</button>
+    <!-- ===== TAB: 首页 ===== -->
+    <div class="tab active" id="tab-home">
+      <div class="hero">
+        <h2>你好 👋<br>想查什么<span>校园信息</span>？</h2>
+        <p>知识库收录了 12 个分类、670+ 条校园问答</p>
+        <div class="hero-badge"><i data-lucide="sparkles"></i> AI 智能问答已上线</div>
       </div>
-      <div class="search-result" id="search-result">
-        <div class="result-card" id="result-card">
-          <div class="result-label"><i data-lucide="message-circle" size="14"></i><span id="result-label-text">回答</span></div>
-          <div class="result-answer" id="result-answer"></div>
-          <div class="result-source" id="result-source"></div>
+
+      <div class="search-bar" id="home-search">
+        <i data-lucide="search" style="width:18px;height:18px"></i>
+        <input type="text" placeholder="搜索校园知识…" id="home-search-input">
+      </div>
+
+      <div class="kpi-row" id="kpi-row">
+        <div class="kpi-card"><div class="kpi-value" id="kpi-cats">—</div><div class="kpi-label">总分类</div></div>
+        <div class="kpi-card"><div class="kpi-value" id="kpi-qa">—</div><div class="kpi-label">知识条目</div></div>
+        <div class="kpi-card"><div class="kpi-value" id="kpi-avg">—</div><div class="kpi-label">平均每类</div></div>
+      </div>
+
+      <div class="section-header"><h3>快捷入口</h3><a href="#" data-tab="browse">查看全部</a></div>
+      <div class="quick-grid" id="quick-grid"></div>
+
+      <div class="section-header"><h3>📢 最新通知</h3></div>
+      <div class="notice-list" id="notice-list"></div>
+    </div>
+
+    <!-- ===== TAB: 浏览 ===== -->
+    <div class="tab" id="tab-browse">
+      <div style="margin:var(--sp-8) 0 var(--sp-4)"><h2 style="font-size:18px;font-weight:700">分类浏览</h2></div>
+      <div class="chip-scroll" id="chip-scroll"></div>
+      <div class="cat-grid" id="cat-grid"></div>
+    </div>
+
+    <!-- ===== TAB: 智聊 ===== -->
+    <div class="tab" id="tab-chat">
+      <div class="chat-area" id="chat-area">
+        <div class="chat-welcome" id="chat-welcome">
+          <div class="logo"><i data-lucide="message-square"></i></div>
+          <h3>校园智聊</h3>
+          <p>问我关于校园生活的任何问题</p>
+          <div class="quick-chips" id="quick-chips"></div>
+        </div>
+      </div>
+      <div class="chat-input-bar">
+        <input class="chat-input" id="chat-input" placeholder="输入你的问题…">
+        <button class="chat-send" id="chat-send"><i data-lucide="send"></i></button>
+      </div>
+    </div>
+
+    <!-- ===== TAB: 我的 ===== -->
+    <div class="tab" id="tab-profile">
+      <div class="profile-card">
+        <div class="profile-row">
+          <div class="profile-avatar">📚</div>
+          <div class="profile-info">
+            <h3>校园百事通</h3>
+            <p>知识库助手 · 24h 在线</p>
+          </div>
+        </div>
+        <div class="profile-stats" id="profile-stats">
+          <div class="profile-stat"><div class="profile-stat-num">—</div><div class="profile-stat-label">分类</div></div>
+          <div class="profile-stat"><div class="profile-stat-num">—</div><div class="profile-stat-label">问答</div></div>
+          <div class="profile-stat"><div class="profile-stat-num">—</div><div class="profile-stat-label">更新</div></div>
+        </div>
+      </div>
+      <div class="profile-section">
+        <h4>设置</h4>
+        <div class="profile-list">
+          <button class="profile-item"><i data-lucide="bell"></i>消息通知<span class="spacer"></span><span class="arrow" data-lucide="chevron-right"></span></button>
+          <button class="profile-item"><i data-lucide="moon"></i>深色模式<span class="spacer"></span><span class="arrow" data-lucide="chevron-right"></span></button>
+          <button class="profile-item"><i data-lucide="shield"></i>隐私政策<span class="spacer"></span><span class="arrow" data-lucide="chevron-right"></span></button>
+          <button class="profile-item"><i data-lucide="info"></i>关于<span class="spacer"></span><span class="badge">v1.0</span></button>
+        </div>
+      </div>
+      <div class="profile-section">
+        <h4>数据来源</h4>
+        <div class="profile-list">
+          <button class="profile-item"><i data-lucide="database"></i>知识库版本<span class="spacer"></span><span class="arrow" data-lucide="chevron-right"></span></button>
+          <button class="profile-item"><i data-lucide="refresh-cw"></i>更新数据<span class="spacer"></span><span class="arrow" data-lucide="chevron-right"></span></button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ═══ CONTENT ═══ -->
-  <div class="grid section">
-    <div class="col-span-12">
-      <div class="section-title"><i data-lucide="book-open"></i>分类导航</div>
-      <div class="list" id="category-list"></div>
-    </div>
-  </div>
+  <!-- ===== BOTTOM NAV ===== -->
+  <nav class="nav" id="bottom-nav">
+    <button class="nav-btn active" data-tab="home"><i data-lucide="home"></i><span>首页</span></button>
+    <button class="nav-btn" data-tab="browse"><i data-lucide="compass"></i><span>浏览</span></button>
+    <button class="nav-btn" data-tab="chat"><i data-lucide="message-square"></i><span>智聊</span></button>
+    <button class="nav-btn" data-tab="profile"><i data-lucide="user"></i><span>我的</span></button>
+  </nav>
+</div>
 
+<!-- ===== DETAIL OVERLAY ===== -->
+<div class="detail-overlay" id="detail-overlay">
+  <div class="detail-header">
+    <button class="detail-back" id="detail-back"><i data-lucide="arrow-left"></i></button>
+    <span class="detail-title" id="detail-title">分类</span>
+  </div>
+  <div class="detail-body" id="detail-body"></div>
 </div>
 
 <script>
 lucide.createIcons();
 
-const ICON_MAP = {
-  '图书馆':'book','食堂':'utensils-crossed','宿舍':'building-2',
-  '校园服务':'briefcase','选课':'file-text','考试':'clipboard-check',
-  '毕业要求':'graduation-cap','奖学金':'award','德育积分':'star',
-  '综合素质实践':'users','社团':'heart','其他':'more-horizontal'
-};
+// ===== Clock =====
+function updateClock(){document.getElementById('time-display').textContent=new Date().toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'})}
+updateClock();setInterval(updateClock,30000)
 
-let allData = {};     // { categoryName: [qaItems] }
-let categoryOrder = [];
-let searchIndex = []; // [{category, question, answer}]
+// ===== Data =====
+let allData={}, categoryOrder=[], searchIndex=[]
+const ICON_MAP={'图书馆':'book','食堂':'utensils-crossed','宿舍':'building-2','校园服务':'briefcase','选课':'file-text','考试':'clipboard-check','毕业要求':'graduation-cap','奖学金':'award','德育积分':'star','综合素质实践':'users','社团':'heart','其他':'more-horizontal'}
+const COLORS=['coral','sunny','mint','slate']
 
-// ========== Load data ==========
-fetch('/api/categories')
-  .then(r => r.json())
-  .then(cats => {
-    categoryOrder = cats;
-    const promises = cats.map(cat =>
-      fetch('/api/qa?category=' + encodeURIComponent(cat))
-        .then(r => r.json())
-        .then(items => { allData[cat] = items; })
-    );
-    return Promise.all(promises);
+function catColor(i){return COLORS[i%4]}
+
+// ===== Load all data =====
+Promise.all([
+  fetch('/api/stats').then(r=>r.json()),
+  fetch('/api/categories').then(r=>r.json())
+]).then(([stats,cats])=>{
+  categoryOrder=cats
+  document.getElementById('kpi-cats').textContent=stats.categories
+  document.getElementById('kpi-qa').textContent=stats.total_qa
+  document.getElementById('kpi-avg').textContent=stats.avg_per_category
+
+  // Profile stats
+  const ps=document.getElementById('profile-stats')
+  ps.innerHTML=
+    '<div class="profile-stat"><div class="profile-stat-num">'+stats.categories+'</div><div class="profile-stat-label">分类</div></div>'+
+    '<div class="profile-stat"><div class="profile-stat-num">'+stats.total_qa+'</div><div class="profile-stat-label">问答</div></div>'+
+    '<div class="profile-stat"><div class="profile-stat-num">'+stats.avg_per_category+'</div><div class="profile-stat-label">平均</div></div>'
+
+  // Load QA per category
+  return Promise.all(cats.map(c=>fetch('/api/qa?category='+encodeURIComponent(c)).then(r=>r.json()).then(items=>{allData[c]=items})))
+}).then(()=>{
+  buildSearchIndex()
+  renderQuickGrid()
+  renderNoticeList()
+  renderBrowse()
+  renderQuickChips()
+  lucide.createIcons()
+}).catch(()=>{})
+
+function buildSearchIndex(){
+  searchIndex=[]
+  for(const c of categoryOrder)for(const i of(allData[c]||[]))searchIndex.push({category:c,question:i.question,answer:i.answer})
+}
+
+// ===== Quick Grid =====
+function renderQuickGrid(){
+  const g=document.getElementById('quick-grid')
+  const items=categoryOrder.slice(0,6)
+  g.innerHTML=items.map((c,i)=>{
+    const icon=ICON_MAP[c]||'file'
+    return '<button class="quick-item" data-cat="'+c+'"><div class="quick-icon '+catColor(i)+'"><i data-lucide="'+icon+'"></i></div>'+c+'</button>'
+  }).join('')
+  g.querySelectorAll('.quick-item').forEach(el=>el.addEventListener('click',()=>openCategory(el.dataset.cat)))
+  lucide.createIcons()
+}
+
+// ===== Notice List =====
+function renderNoticeList(){
+  const list=document.getElementById('notice-list')
+  const notices=[]
+  for(const c of categoryOrder){
+    const items=allData[c]||[]
+    if(items.length)notices.push({cat:c,count:items.length,q:items[0].question})
+  }
+  list.innerHTML=notices.slice(0,5).map((n,i)=>
+    '<div class="notice-item" data-cat="'+n.cat+'"><div class="notice-dot '+catColor(i)+'"></div><span class="notice-text">【'+n.cat+'】'+n.q+'</span><span class="notice-time">'+n.count+' 条</span></div>'
+  ).join('')
+  list.querySelectorAll('.notice-item').forEach(el=>el.addEventListener('click',()=>openCategory(el.dataset.cat)))
+}
+
+// ===== Browse Tab =====
+let activeChip=0
+function renderBrowse(){
+  const chips=document.getElementById('chip-scroll')
+  chips.innerHTML=categoryOrder.map((c,i)=>'<button class="chip'+(i===0?' active':'')+'" data-idx="'+i+'">'+c+'</button>').join('')
+  chips.querySelectorAll('.chip').forEach(el=>el.addEventListener('click',()=>{
+    chips.querySelector('.active')?.classList.remove('active')
+    el.classList.add('active')
+    activeChip=parseInt(el.dataset.idx)
+    renderCatGrid(activeChip)
+  }))
+  renderCatGrid(0)
+}
+
+function renderCatGrid(idx){
+  const grid=document.getElementById('cat-grid')
+  const cat=categoryOrder[idx]
+  const items=allData[cat]||[]
+  const icon=ICON_MAP[cat]||'file'
+  grid.innerHTML='<button class="cat-card" style="grid-column:1/-1" data-cat="'+cat+'"><div class="cat-card-icon '+catColor(idx)+'"><i data-lucide="'+icon+'"></i></div><div class="cat-card-info"><div class="cat-card-name">'+cat+'</div><div class="cat-card-count">共 '+items.length+' 条问答</div></div><i data-lucide="chevron-right" class="cat-card-arrow"></i></button>'
+  grid.querySelector('.cat-card').addEventListener('click',()=>openCategory(cat))
+  lucide.createIcons()
+}
+
+// ===== Chat =====
+let chatHistory=[]
+function renderQuickChips(){
+  const chips=document.getElementById('quick-chips')
+  const questions=['图书馆几点开门？','食堂有什么好吃的？','宿舍几点关门？','怎么选课？']
+  chips.innerHTML=questions.map(q=>'<button class="quick-chip">'+q+'</button>').join('')
+  chips.querySelectorAll('.quick-chip').forEach(el=>el.addEventListener('click',()=>{
+    document.getElementById('chat-input').value=el.textContent
+    doChat(el.textContent)
+  }))
+}
+
+function addChatMsg(text,isUser){
+  const area=document.getElementById('chat-area')
+  const welcome=document.getElementById('chat-welcome')
+  if(welcome)welcome.style.display='none'
+  const div=document.createElement('div')
+  div.className='chat-msg '+(isUser?'user':'bot')
+  div.innerHTML='<div class="chat-avatar '+(isUser?'user':'bot')+'">'+(isUser?'我':'AI')+'</div><div class="chat-bubble">'+text+'</div>'
+  area.appendChild(div)
+  area.scrollTop=area.scrollHeight
+  lucide.createIcons()
+}
+
+document.getElementById('chat-send').addEventListener('click',()=>{
+  const input=document.getElementById('chat-input')
+  if(input.value.trim())doChat(input.value.trim())
+})
+document.getElementById('chat-input').addEventListener('keydown',function(e){
+  if(e.key==='Enter'&&this.value.trim())doChat(this.value.trim())
+})
+
+function doChat(q){
+  const input=document.getElementById('chat-input')
+  input.value=''
+  addChatMsg(q,true)
+  fetch('/api/handbook',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:q})})
+  .then(r=>r.json()).then(d=>{
+    addChatMsg(d.answer+'<br><span style="font-size:12px;opacity:0.6">来源：'+d.category+' · '+d.related+'</span>',false)
+  }).catch(()=>addChatMsg('网络异常，请稍后再试',false))
+}
+
+// ===== Category Detail =====
+function openCategory(cat){
+  const items=allData[cat]||[]
+  document.getElementById('detail-title').textContent=cat
+  const body=document.getElementById('detail-body')
+  if(items.length===0){
+    body.innerHTML='<div style="text-align:center;padding:48px 16px;color:#aaa">暂无数据</div>'
+  }else{
+    body.innerHTML=items.map(i=>'<div class="detail-qa-item"><div class="detail-qa-q">'+i.question+'</div><div class="detail-qa-a">'+i.answer+'</div></div>').join('')
+  }
+  document.getElementById('detail-overlay').classList.add('open')
+  document.getElementById('main-scroll').scrollTop=0
+}
+document.getElementById('detail-back').addEventListener('click',()=>document.getElementById('detail-overlay').classList.remove('open'))
+
+// ===== Tab Switching =====
+document.querySelectorAll('.nav-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'))
+    btn.classList.add('active')
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'))
+    document.getElementById('tab-'+btn.dataset.tab).classList.add('active')
+    document.getElementById('main-scroll').scrollTop=0
   })
-  .then(() => {
-    buildSearchIndex();
-    renderKPIs();
-    renderCategoryList();
-    lucide.createIcons();
-  })
-  .catch(() => {});
+})
+document.querySelector('.section-header a[data-tab="browse"]')?.addEventListener('click',function(e){
+  e.preventDefault()
+  document.querySelector('.nav-btn[data-tab="browse"]').click()
+})
 
-function buildSearchIndex() {
-  searchIndex = [];
-  for (const cat of categoryOrder) {
-    const items = allData[cat] || [];
-    for (const item of items) {
-      searchIndex.push({ category: cat, question: item.question, answer: item.answer });
-    }
+// ===== Home Search =====
+document.getElementById('home-search-input').addEventListener('keydown',function(e){
+  if(e.key==='Enter'&&this.value.trim()){
+    const q=this.value.trim()
+    document.querySelector('.nav-btn[data-tab="chat"]').click()
+    document.getElementById('chat-input').value=q
+    doChat(q)
   }
-}
-
-// ========== KPI ==========
-function renderKPIs() {
-  let totalQA = 0;
-  const counts = {};
-  for (const cat of categoryOrder) {
-    const n = (allData[cat] || []).length;
-    counts[cat] = n;
-    totalQA += n;
-  }
-  const catCount = categoryOrder.length;
-  const avg = catCount ? Math.round(totalQA / catCount) : 0;
-
-  document.getElementById('kpi-categories').textContent = catCount;
-  document.getElementById('kpi-qa').textContent = totalQA;
-  document.getElementById('kpi-avg').textContent = avg;
-
-  setTrend('trend-categories', catCount, avg, '类');
-  setTrend('trend-qa', totalQA, avg * catCount, '条');
-  setTrend('trend-avg', avg, avg, '条');
-}
-
-function setTrend(id, val, ref, unit) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  if (val > ref) {
-    el.className = 'kpi-trend up';
-    el.innerHTML = '<i data-lucide="trending-up" size="14"></i> +' + (val - ref) + unit;
-  } else if (val < ref) {
-    el.className = 'kpi-trend down';
-    el.innerHTML = '<i data-lucide="trending-down" size="14"></i> ' + (val - ref) + unit;
-  } else {
-    el.innerHTML = '<span>— 持平</span>';
-  }
-  lucide.createIcons();
-}
-
-// ========== Category list ==========
-function renderCategoryList() {
-  const container = document.getElementById('category-list');
-  container.innerHTML = categoryOrder.map(cat => {
-    const count = (allData[cat] || []).length;
-    const icon = ICON_MAP[cat] || 'file';
-    return '<div class="list-item" data-category="' + cat + '">'
-      + '<div class="list-item-left">'
-      + '<i data-lucide="' + icon + '" class="list-item-icon"></i>'
-      + '<span class="list-item-text">' + cat + '</span>'
-      + '</div>'
-      + '<div style="display:flex;align-items:center;gap:8px">'
-      + '<span class="list-item-count">' + count + ' 条</span>'
-      + '<i data-lucide="chevron-right" class="list-item-arrow"></i>'
-      + '</div>'
-      + '</div>';
-  }).join('');
-  lucide.createIcons();
-}
-
-// ========== Click category → expand Q&A ==========
-document.getElementById('category-list').addEventListener('click', function(e) {
-  const item = e.target.closest('.list-item');
-  if (!item) return;
-  const cat = item.dataset.category;
-  const existing = item.nextElementSibling;
-  if (existing && existing.classList.contains('qa-items')) {
-    existing.classList.toggle('open');
-    const arrow = item.querySelector('.list-item-arrow');
-    if (arrow) arrow.style.transform = existing.classList.contains('open') ? 'rotate(90deg)' : '';
-    return;
-  }
-  const items = allData[cat] || [];
-  const div = document.createElement('div');
-  div.className = 'qa-items';
-  if (items.length === 0) {
-    div.innerHTML = '<div class="qa-empty">暂无数据</div>';
-  } else {
-    div.innerHTML = items.map(q => (
-      '<div class="qa-item">'
-      + '<div class="qa-question">' + q.question + '</div>'
-      + '<div class="qa-answer">' + q.answer + '</div>'
-      + '</div>'
-    )).join('');
-  }
-  item.parentNode.insertBefore(div, item.nextSibling);
-  requestAnimationFrame(() => div.classList.add('open'));
-  const arrow = item.querySelector('.list-item-arrow');
-  if (arrow) arrow.style.transform = 'rotate(90deg)';
-});
-
-// ========== Search ==========
-document.getElementById('search-btn').addEventListener('click', doSearch);
-document.getElementById('search-input').addEventListener('keydown', function(e) {
-  if (e.key === 'Enter') doSearch();
-});
-
-function doSearch() {
-  const q = document.getElementById('search-input').value.trim();
-  const el = document.getElementById('search-result');
-  if (!q || searchIndex.length === 0) { el.classList.remove('show'); return; }
-
-  const kw = q.toLowerCase();
-  const results = [];
-  for (const item of searchIndex) {
-    let score = 0;
-    if (item.question.includes(kw) || item.answer.includes(kw)) score += 100;
-    if (item.question.toLowerCase().includes(kw)) score += 20;
-    if (item.answer.toLowerCase().includes(kw)) score += 10;
-    if (score > 0) results.push({ ...item, score });
-  }
-  results.sort((a, b) => b.score - a.score);
-
-  if (results.length === 0) {
-    document.getElementById('result-label-text').textContent = '未找到结果';
-    document.getElementById('result-answer').textContent = '抱歉，知识库中没有找到相关答案，请咨询辅导员或教务处。';
-    document.getElementById('result-source').textContent = '';
-  } else {
-    const best = results[0];
-    document.getElementById('result-label-text').textContent = '回答';
-    document.getElementById('result-answer').textContent = best.answer;
-    document.getElementById('result-source').textContent = '来源：' + best.category + ' · ' + best.question;
-  }
-  el.classList.add('show');
-  lucide.createIcons();
-}
+})
+document.getElementById('home-search').addEventListener('click',function(e){
+  if(e.target.tagName!=='INPUT')this.querySelector('input').focus()
+})
 </script>
 </body>
 </html>
